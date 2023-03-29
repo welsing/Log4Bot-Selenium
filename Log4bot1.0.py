@@ -172,16 +172,34 @@ while True:
 
 
 # Ler tabelas de ICCIDS
-tabela = pd.read_excel('C:\\Userszberna\\Documents\\dbiccid.xlsx')
+db = pd.read_excel('database.xlsx')
 
 # Preenchendo DATA e ICCID
 for c in range(1, casos+1):
-    iccids = tabela.loc[c-1, 'ICCID']
+    iccids = db.loc[c-1, 'ICCID']
     element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, f"(//input[@id='UF_CRM_1549387846_control'])[{c}]"))).send_keys(iccids)
     element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, f"(//input[@name='UF_CRM_1543599852'])[{c}]"))).send_keys(data)
 
+# Esperando para colocar codigo de rastreio
+print('ICCIDS COLADOS!')
+while True:
+    print('Podemos colocar o Cod. de Rastreio?')
+    respostacod = input('Digite S/N: ').upper()
+    if resposta == 'S':
+        print('Colocando codigos de rastreamento.')
+        break
+    else:
+        print('Okay, quando puder!')
+
+# Ler tabela com codigos
+db = pd.read_excel('database.xlsx')
+# Preenchendo cod de rastreio
+for cc in range(1, casos+1):
+    codigos = db.loc[cc-1, 'RASTREIO']
+    element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
+    (By.XPATH, f"(//input[@id='UF_CRM_1543591399_control'])[{cc}]"))).send_keys(codigos)
 
 print('ACABOU!')
 

@@ -31,3 +31,5 @@
 # XPATH ICCID
 # (//input[@id='UF_CRM_1549387846_control'])[1]
 
+# XPATH COD. RASTREIO
+# (//input[@id='UF_CRM_1543591399_control'])[1]
