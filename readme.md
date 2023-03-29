@@ -1,8 +1,9 @@
-    Esta é uma automação utilizando selenium e phyton, no qual tive a ideia de fazer no meu trabalho atual.
+Esta é uma automação utilizando selenium e phyton, no qual tive a ideia de fazer no meu trabalho atual.
 
-Trabalho atualmente como aux. de logistica e passo muitas horas tratando clientes no CRM bitrix, no qual colo centenas de vezes no dia data e codigo ICCID, estudo phyton além do trabalho e criei esta automação como uma forma de aprender e como uma solução no dia a dia.
+    Trabalho atualmente como aux. de logistica e passo muitas horas tratando clientes no CRM bitrix, no qual colo centenas de vezes no dia data e codigo ICCID, estudo phyton além do trabalho e criei esta automação como uma forma de aprender e como uma solução no dia a dia.
 
-funcionamento: 
+
+FUNCIONAMENTO: 
     O bot primeiro loga no CRM.
 
     Depois de logado ele faz o filtro solicitado
