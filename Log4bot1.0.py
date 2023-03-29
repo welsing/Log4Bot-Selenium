@@ -41,8 +41,10 @@ else:
     sys.exit()
 
 # Variaveis de login
-email = 'bernardowelsing90@gmail.com'
-senha = 'Esqueci123W'
+email = ''
+senha = ''
+
+
 
 print(f'Logando como [{email}]')
 
