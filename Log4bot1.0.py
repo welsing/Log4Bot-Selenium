@@ -41,7 +41,7 @@ else:
     sys.exit()
 
 # Variaveis de login
-email = ''
+email = 'bernardowelsing90@gmail.com'
 senha = ''
 
 
@@ -195,11 +195,20 @@ while True:
 
 # Ler tabela com codigos
 db = pd.read_excel('database.xlsx')
-# Preenchendo cod de rastreio
+# Preenchendo cod de rastreio e substatus
 for cc in range(1, casos+1):
     codigos = db.loc[cc-1, 'RASTREIO']
     element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, f"(//input[@id='UF_CRM_1543591399_control'])[{cc}]"))).send_keys(codigos)
+    if escolhafiltro == '1' or escolhafiltro == '3' or escolhafiltro == '4':
+        element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, f"(//div[@id='UF_CRM_1542637220_control'])[{cc}]"))).click()
+        element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-dropdown-item'])[4]"))).click()
+
+# Rolar para o topo da tela
+browser.execute_script("window.scrollTo(0, -document.body.scrollHeight);")
+# Clicar no SubStatus
+#element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//div[@id='UF_CRM_1542637220_control'])[1]"))).click()
+#element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-dropdown-item'])[4]"))).click()
 
 print('ACABOU!')
 

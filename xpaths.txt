@@ -33,3 +33,7 @@
 
 # XPATH COD. RASTREIO
 # (//input[@id='UF_CRM_1543591399_control'])[1]
+
+
+#xpath substatus
+# (//div[@id='UF_CRM_1542637220_control'])[1]
