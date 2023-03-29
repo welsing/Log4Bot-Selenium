@@ -1,0 +1,33 @@
+# xpath do login
+# //*[@id="login"]
+
+# xpath do entrar
+# //*[@id="authorize-layout"]/div/div[3]/div/form/div/div[5]/button[1]
+
+# xpath da senha
+# //*[@id="password"]
+
+# XPATH entrar senha
+# //*[@id="authorize-layout"]/div/div[3]/div/form/div/div[3]/button[1]
+
+# xpath para wait  --- estamos usando o sleep por enquanto
+# //*[@id="CRM_DEAL_LIST_V12_C_0_table"]/thead/tr/th[6]/div/span/span[1]
+
+# xpath do filtro
+# //*[@id="CRM_DEAL_LIST_V12_C_0_search"]
+
+# xpath do filtro automatico
+# //*[@id="popup-window-content-CRM_DEAL_LIST_V12_C_0_search_container"]/div/div/div[1]/div[2]/div[3]/span[2]/span[1]
+
+# XPATH da caixa de selecionar tudo
+# //*[@id="CRM_DEAL_LIST_V12_C_0_check_all"]
+
+# xpath do botão editar
+# //*[@id="grid_edit_button_control"]
+
+# xpath data
+# (//input[@name='UF_CRM_1543599852'])[1]
+
+# XPATH ICCID
+# (//input[@id='UF_CRM_1549387846_control'])[1]
+
