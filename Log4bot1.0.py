@@ -41,7 +41,7 @@ else:
     sys.exit()
 
 # Variaveis de login
-email = 'bernardowelsing90@gmail.com'
+email = ''
 senha = ''
 
 
@@ -106,7 +106,7 @@ element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, '//*[@id="CRM_DEAL_LIST_V12_C_0_search"]'))).click()
 sleep(1)
 
-# Fazendo filtro INICIO PRE
+# Fazendo FILTRO 
 element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, f'{filtro}'))).click()
 sleep(5)
@@ -115,6 +115,8 @@ sleep(5)
 # Verificador de Mostrar Mais
 tot = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-grid-counter-displayed'])[1]")))
 total = tot.text
+sleep(1)
+total = int(total)
 if total == 100:
     try:
         more = WebDriverWait(browser, 10).until(EC.visibility_of_element_located(
@@ -158,17 +160,18 @@ browser.execute_script("window.scrollTo(0, -document.body.scrollHeight);")
 
 # PEDIR PARA COLOCAR OS ICCID
 while True:
-    print(f'COLOQUE {casos} ICCIDs NO BANCO DE DADOS')
+    #print(f'COLOQUE {casos} ICCIDs NO BANCO DE DADOS')
     print('COLOU OS ICCID E SALVOU?')
-    resposta = input('DIGITE S/N: ').upper()
+    resposta = input('DIGITE S/X: ').upper()
     if resposta == 'S':
         print('Obrigado, colando ICCIDS!')
         break
-    elif resposta == 'N':
-        print('Não colocou? Tente novamente!')
-    else:
-        print('RESPOSTA INVALIDA, FECHANDO PROGRAMA')
+    elif resposta == 'X':
+        print('FECHANDO O PROGRAMA')
         sys.exit()
+    else:
+        print('Não colocou? Tente novamente!')
+        
 
 
 # Ler tabelas de ICCIDS
@@ -186,10 +189,12 @@ for c in range(1, casos+1):
 print('ICCIDS COLADOS!')
 while True:
     print('Podemos colocar o Cod. de Rastreio?')
-    respostacod = input('Digite S/N: ').upper()
-    if resposta == 'S':
+    respostacod = input('Digite S/X: ').upper()
+    if respostacod == 'S':
         print('Colocando codigos de rastreamento.')
         break
+    elif respostacod == 'X':
+        sys.exit()
     else:
         print('Okay, quando puder!')
 
@@ -200,17 +205,17 @@ for cc in range(1, casos+1):
     codigos = db.loc[cc-1, 'RASTREIO']
     element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, f"(//input[@id='UF_CRM_1543591399_control'])[{cc}]"))).send_keys(codigos)
+    # Seleciona Substatus
     if escolhafiltro == '1' or escolhafiltro == '3' or escolhafiltro == '4':
         element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, f"(//div[@id='UF_CRM_1542637220_control'])[{cc}]"))).click()
         element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-dropdown-item'])[4]"))).click()
 
 # Rolar para o topo da tela
+sleep(1)
 browser.execute_script("window.scrollTo(0, -document.body.scrollHeight);")
-# Clicar no SubStatus
-#element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//div[@id='UF_CRM_1542637220_control'])[1]"))).click()
-#element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-dropdown-item'])[4]"))).click()
 
 print('ACABOU!')
 
 
-
+# xpath tim
+# (//input[@id='UF_CRM_1543950066_control'])[{cc}]
