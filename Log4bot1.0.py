@@ -20,22 +20,29 @@ import pandas as pd
 
 
 # Variaveis de filtro.
-print('ESCOLHA O FILTRO QUE SERÁ FEITO')
-print('''[1] - Inicio Pré-Pago
-[2] - Inicio Controle
-[3] - Inicio Combo Pré
-[4] - Inicio Flex ''')
+print('        \033[35;7mMENU DE ROTINAS\033[m')
+print('''[1] - Inicio \033[31mPré-Pago\033[m
+[2] - Inicio \033[31mCombo Pré\033[m
+[3] - Inicio \033[31mFlex\033[m
+[4] - Inicio \033[34mTIM\033[m
+[5] - PréPostar \033[34mTIM\033[m ''')
 
-escolhafiltro = input('Escolha uma opção: ')
-filtro = ''
-if escolhafiltro == '1':
-    filtro = '//*[@id="popup-window-content-CRM_DEAL_LIST_V12_C_0_search_container"]/div/div/div[1]/div[2]/div[3]/span[2]/span[1]'
-elif escolhafiltro == '2':
-    filtro = '//*[@id="popup-window-content-CRM_DEAL_LIST_V12_C_0_search_container"]/div/div/div[1]/div[2]/div[5]/span[2]/span[1]'
-elif escolhafiltro == '3':
-    filtro = '//*[@id="popup-window-content-CRM_DEAL_LIST_V12_C_0_search_container"]/div/div/div[1]/div[2]/div[4]/span[2]/span[1]'
-elif escolhafiltro == '4':
-    filtro = '//*[@id="popup-window-content-CRM_DEAL_LIST_V12_C_0_search_container"]/div/div/div[1]/div[2]/div[6]/span[2]/span[1]'
+menu_Inicial = input('Escolha uma opção: ')
+if menu_Inicial in '123':
+    link = 'https://vertexdigital.bitrix24.com.br/crm/deal/category/0/'
+elif menu_Inicial in '45':
+    link = 'https://vertextim.bitrix24.com.br/crm/deal/category/0/'
+xpath_Filtro = ''
+if menu_Inicial == '1':
+    xpath_Filtro = "(//span[@class='main-ui-filter-sidebar-item-text'])[3]"
+elif menu_Inicial == '2':
+    xpath_Filtro = "(//span[@class='main-ui-filter-sidebar-item-text'])[4]"
+elif menu_Inicial == '3':
+    xpath_Filtro = "(//span[@class='main-ui-filter-sidebar-item-text'])[5]"
+elif menu_Inicial == '4':
+    xpath_Filtro = "(//span[@class='main-ui-filter-sidebar-item-text'])[3]"
+elif menu_Inicial == '5':
+    xpath_Filtro = "(//span[@class='main-ui-filter-sidebar-item-text'])[4]"
 else:
     print('ESCOLHA INVALIDA')
     sys.exit()
@@ -46,11 +53,11 @@ senha = ''
 
 
 
-print(f'Logando como [{email}]')
+print(f'Fazendo Login como \033[4;32m{email}\033[m')
 
 # Gerando data atual
-print('ESCOLHA A DATA DESEJADA.')
-escolhadata = input('Digite 0 para data de hoje ou digite a data desejada: ')
+print('ESCOLHA A \033[34mDATA\033[m DESEJADA. | DIGITE \033[4;34m0\033[m PARA DATA ATUAL')
+escolhadata = input('DIGITE A DATA: ')
 if escolhadata == '0':
     data = ''
     dia = date.today().day
@@ -61,7 +68,7 @@ if escolhadata == '0':
     elif mes > 10:
         data = f"{dia}/{mes}/{ano}"
 else:
-    data = escolhadata  
+    data = escolhadata
 
 print('Trataremos os envios para {}'.format(data))
 
@@ -77,7 +84,7 @@ browser.maximize_window()
 
 # Iniciando a automação
 # Abrindo bitrix
-browser.get('https://vertexdigital.bitrix24.com.br/crm/deal/category/0/')
+browser.get(f'{link}')
 
 # Preenchendo email
 element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
@@ -90,7 +97,6 @@ browser.find_element(
 sleep(1)
 
 # Preenchendo senha
-
 element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
     (By.XPATH, '//*[@id="password"]'))).send_keys(senha)
 sleep(1)
@@ -108,16 +114,13 @@ sleep(1)
 
 # Fazendo FILTRO 
 element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
-    (By.XPATH, f'{filtro}'))).click()
-sleep(5)
-
-
+    (By.XPATH, f'{xpath_Filtro}'))).click()
+sleep(5) # To usando esse sleep aqui pois ele não espera carregar para pegar a variavel TOT pois ela aparece na tela anterior também.
 # Verificador de Mostrar Mais
 tot = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-grid-counter-displayed'])[1]")))
 total = tot.text
 sleep(1)
-total = int(total)
-if total == 100:
+if total == '100':
     try:
         more = WebDriverWait(browser, 10).until(EC.visibility_of_element_located(
             (By.XPATH, "(//span[@class='main-grid-more-text'])")))
@@ -158,37 +161,40 @@ sleep(1)
 # Rolar para o topo da tela
 browser.execute_script("window.scrollTo(0, -document.body.scrollHeight);")
 
-# PEDIR PARA COLOCAR OS ICCID
+
+if menu_Inicial in '1234':
+    # PEDIR PARA COLOCAR OS ICCID
+    while True:
+        print(f'COLOQUE {casos} ICCID NA DATABASE')
+        print('COLOU OS ICCID E SALVOU?')
+        resposta = input('DIGITE S/X: ').upper()
+        if resposta == 'S':
+            print('Obrigado, colando ICCIDS!')
+            break
+        elif resposta == 'X':
+            print('FECHANDO O PROGRAMA')
+            sys.exit()
+        else:
+            print('Não colocou? Tente novamente!')
+            
+
+    # Ler tabelas de ICCIDS
+    db = pd.read_excel('database.xlsx')
+
+    # Preenchendo DATA e ICCID
+    for c in range(1, casos+1):
+        iccids = db.loc[c-1, 'ICCID']
+        element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
+        (By.XPATH, f"(//input[@id='UF_CRM_1549387846_control'])[{c}]"))).send_keys(iccids)
+        element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
+        (By.XPATH, f"(//input[@name='UF_CRM_1543599852'])[{c}]"))).send_keys(data)
+    print('ICCIDS COLADOS!')
+
+
+# PEDIR PARA INSERIR CODIGOS DE RASTREIO
 while True:
-    #print(f'COLOQUE {casos} ICCIDs NO BANCO DE DADOS')
-    print('COLOU OS ICCID E SALVOU?')
-    resposta = input('DIGITE S/X: ').upper()
-    if resposta == 'S':
-        print('Obrigado, colando ICCIDS!')
-        break
-    elif resposta == 'X':
-        print('FECHANDO O PROGRAMA')
-        sys.exit()
-    else:
-        print('Não colocou? Tente novamente!')
-        
-
-
-# Ler tabelas de ICCIDS
-db = pd.read_excel('database.xlsx')
-
-# Preenchendo DATA e ICCID
-for c in range(1, casos+1):
-    iccids = db.loc[c-1, 'ICCID']
-    element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
-    (By.XPATH, f"(//input[@id='UF_CRM_1549387846_control'])[{c}]"))).send_keys(iccids)
-    element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
-    (By.XPATH, f"(//input[@name='UF_CRM_1543599852'])[{c}]"))).send_keys(data)
-
-# Esperando para colocar codigo de rastreio
-print('ICCIDS COLADOS!')
-while True:
-    print('Podemos colocar o Cod. de Rastreio?')
+    print(f'COLOQUE {casos} CODIGOS NA DATABASE')
+    print('Podemos colar o Cod. de Rastreio?')
     respostacod = input('Digite S/X: ').upper()
     if respostacod == 'S':
         print('Colocando codigos de rastreamento.')
@@ -200,13 +206,20 @@ while True:
 
 # Ler tabela com codigos
 db = pd.read_excel('database.xlsx')
+
 # Preenchendo cod de rastreio e substatus
+
+if menu_Inicial in '45': # Escolhe xpath para cada bitrix
+    xpath_CodRastreio = "(//input[@id='UF_CRM_1543950066_control'])"
+else:
+    xpath_CodRastreio = "(//input[@id='UF_CRM_1543591399_control'])"
+
 for cc in range(1, casos+1):
     codigos = db.loc[cc-1, 'RASTREIO']
     element = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
-    (By.XPATH, f"(//input[@id='UF_CRM_1543591399_control'])[{cc}]"))).send_keys(codigos)
-    # Seleciona Substatus
-    if escolhafiltro == '1' or escolhafiltro == '3' or escolhafiltro == '4':
+    (By.XPATH, f"{xpath_CodRastreio}[{cc}]"))).send_keys(codigos)
+    # Seleciona Substatus CASO for prepago, combo ou flex
+    if menu_Inicial == '1' or menu_Inicial == '2' or menu_Inicial == '3':
         element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, f"(//div[@id='UF_CRM_1542637220_control'])[{cc}]"))).click()
         element = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.XPATH, "(//span[@class='main-dropdown-item'])[4]"))).click()
 
